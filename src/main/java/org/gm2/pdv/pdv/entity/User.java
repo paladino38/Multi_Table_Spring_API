@@ -3,6 +3,7 @@ package org.gm2.pdv.pdv.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,5 +21,8 @@ public class User {
     private String name;
 
 
-    protected boolean isEnabled;
+    private boolean isEnabled;
+
+    @OneToMany(mappedBy = "user")
+    private List<Sale> sales;
 }
