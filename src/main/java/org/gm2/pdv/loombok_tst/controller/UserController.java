@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -28,8 +27,29 @@ public class UserController {
     @PostMapping()
     public ResponseEntity post(@RequestBody User user ){
         try{
+            user.setEnabled(true);
             return new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
         }catch(Exception error){
+            return new ResponseEntity<>(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping()
+    public ResponseEntity put(@RequestBody User user ){
+
+            Optional<User> userToEdit = userRepository.findById(user.getId());
+            if (userToEdit.isPresent()) {
+                userRepository.save(user);
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            }
+            return  ResponseEntity.notFound().build();
+    }
+    @DeleteMapping("{id}")
+    public ResponseEntity delete(@PathVariable("id") Long id){
+        try{
+            userRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception error){
             return new ResponseEntity<>(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
