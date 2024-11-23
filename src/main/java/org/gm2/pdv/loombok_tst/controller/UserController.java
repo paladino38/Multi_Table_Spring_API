@@ -48,7 +48,7 @@ public class UserController {
     public ResponseEntity delete(@PathVariable("id") Long id){
         try{
             userRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("User removed",HttpStatus.OK);
         }catch (Exception error){
             return new ResponseEntity<>(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
