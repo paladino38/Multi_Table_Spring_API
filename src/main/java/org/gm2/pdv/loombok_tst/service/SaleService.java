@@ -84,8 +84,30 @@ public class SaleService {
             ItemSale itemSale = new ItemSale();
             itemSale.setProduct(product);
             itemSale.setQuantity(item.getQuantity());
+            if (product.getQuantity() == 0){
+                try {
+                    throw new Exception();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }else if (product.getQuantity() < item.getQuantity()){
+                try {
+                    throw new Exception();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            int total = product.getQuantity()  - item.getQuantity();
+            product.setQuantity(total);
+            productRepository.save(product);
+
             return itemSale;
         }).collect(Collectors.toList());
 
+    }
+
+    public SaleInfoDTO getById(Long id) {
+        Sale sale = saleRepository.findById(id).get();
+        return getSaleInfo(sale);
     }
 }
