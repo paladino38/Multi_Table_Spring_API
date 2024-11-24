@@ -11,6 +11,8 @@ import org.gm2.pdv.loombok_tst.entity.ItemSale;
 import org.gm2.pdv.loombok_tst.dto.ProductDTO;
 import org.gm2.pdv.loombok_tst.entity.Sale;
 import org.gm2.pdv.loombok_tst.entity.User;
+import org.gm2.pdv.loombok_tst.exception.InvalidOperationException;
+import org.gm2.pdv.loombok_tst.exception.NoItemException;
 import org.gm2.pdv.loombok_tst.repository.ItemSaleRepository;
 import org.gm2.pdv.loombok_tst.repository.ProductRepository;
 import org.gm2.pdv.loombok_tst.repository.SaleRepository;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,17 +60,22 @@ public class SaleService {
 
     @Transactional
     public long save(SaleDTO sale){
-        User user = userRepository.findById(sale.getUserId()).get();
-        Sale newSale = new Sale();
-        newSale.setUser(user);
-        newSale.setDate(LocalDateTime.now());
-        List<ItemSale> items = getItemSale(sale.getItems());
+       Optional<User> optional = userRepository.findById(sale.getUserId());
+       if (optional.isPresent()) {
+           User user = optional.get();
+           Sale newSale = new Sale();
+           newSale.setUser(user);
+           newSale.setDate(LocalDateTime.now());
+           List<ItemSale> items = getItemSale(sale.getItems());
 
-        newSale = saleRepository.save(newSale);
+           newSale = saleRepository.save(newSale);
 
-        saveItemSale(items, newSale);
+           saveItemSale(items, newSale);
+           return newSale.getId();
+       }
 
-        return newSale.getId();
+
+        return 0;
     }
 
     private void saveItemSale(List<ItemSale> items, Sale newSale) {
@@ -79,6 +87,9 @@ public class SaleService {
 
     private List<ItemSale> getItemSale(List<ProductDTO> products){
         return products.stream().map(item ->{
+            if (products.isEmpty()){
+                throw  new NoItemException("sem item para venda");
+            }
             Product product = productRepository.getReferenceById(item.getProductId());
 
             ItemSale itemSale = new ItemSale();
@@ -88,13 +99,13 @@ public class SaleService {
                 try {
                     throw new Exception();
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    throw new NoItemException("Quantidade requisitada maior que quantidade disponivel");
                 }
             }else if (product.getQuantity() < item.getQuantity()){
                 try {
                     throw new Exception();
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    throw new InvalidOperationException("quantidade de items superior ao disponivel");
                 }
             }
             int total = product.getQuantity()  - item.getQuantity();

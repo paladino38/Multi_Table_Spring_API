@@ -1,6 +1,8 @@
 package org.gm2.pdv.loombok_tst.controller;
 
+import org.gm2.pdv.loombok_tst.dto.ResponseDTO;
 import org.gm2.pdv.loombok_tst.dto.SaleDTO;
+import org.gm2.pdv.loombok_tst.dto.SaleInfoDTO;
 import org.gm2.pdv.loombok_tst.entity.User;
 import org.gm2.pdv.loombok_tst.repository.UserRepository;
 import org.gm2.pdv.loombok_tst.service.SaleService;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -25,6 +28,7 @@ public class SaleController {
 
     @GetMapping()
     public ResponseEntity getAll(){
+      // return new ResponseEntity<>(new ResponseDTO<List<SaleInfoDTO>>("",saleService.findAll(),HttpStatus.OK))
         return  new ResponseEntity<>(saleService.findAll(), HttpStatus.OK);
     }
 
