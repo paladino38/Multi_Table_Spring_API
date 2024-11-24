@@ -45,7 +45,7 @@ public ResponseEntity getById(@PathVariable Long id){
            System.out.println("Valor do Userid é" + saleDTO.getUserId());
             System.out.println("Valor do product é" + saleDTO.getItems());
             long id = saleService.save(saleDTO);
-            return new ResponseEntity("Venda realisada com sucesso" + id, HttpStatus.CREATED);
+            return new ResponseEntity(new ResponseDTO<>("Venda realizada com sucesso " + id,null,HttpStatus.OK), HttpStatus.CREATED);
 
         }catch (Exception e) {
                     return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
