@@ -3,6 +3,7 @@ package org.gm2.pdv.loombok_tst.service;
 import org.gm2.pdv.loombok_tst.dto.UserDTO;
 import org.gm2.pdv.loombok_tst.entity.User;
 import org.gm2.pdv.loombok_tst.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
+    @Autowired
     private UserRepository userRepository;
     public List<UserDTO> findAll(){
         return userRepository.findAll().stream().map(user -> new UserDTO(user.getId(),user.getName(),user.isEnabled())).collect(Collectors.toList());
