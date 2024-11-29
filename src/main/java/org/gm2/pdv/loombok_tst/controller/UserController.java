@@ -2,6 +2,7 @@ package org.gm2.pdv.loombok_tst.controller;
 
 import org.gm2.pdv.loombok_tst.entity.User;
 import org.gm2.pdv.loombok_tst.repository.UserRepository;
+import org.gm2.pdv.loombok_tst.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,22 +14,22 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    private UserRepository userRepository;
+    private UserService userService;
 
-    public UserController(@Autowired UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(@Autowired UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping()
     public ResponseEntity getAll(){
-        return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping()
     public ResponseEntity post(@RequestBody User user ){
         try{
             user.setEnabled(true);
-            return new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
+            return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
         }catch(Exception error){
             return new ResponseEntity<>(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -37,9 +38,9 @@ public class UserController {
     @PutMapping()
     public ResponseEntity put(@RequestBody User user ){
 
-            Optional<User> userToEdit = userRepository.findById(user.getId());
+            Optional<User> userToEdit = userService.findById(user.getId());
             if (userToEdit.isPresent()) {
-                userRepository.save(user);
+                userService.save(user);
                 return new ResponseEntity<>(user, HttpStatus.OK);
             }
             return  ResponseEntity.notFound().build();
@@ -47,7 +48,7 @@ public class UserController {
     @DeleteMapping("{id}")
     public ResponseEntity delete(@PathVariable("id") Long id){
         try{
-            userRepository.deleteById(id);
+            userService.deleteById(id);
             return new ResponseEntity<>("User removed",HttpStatus.OK);
         }catch (Exception error){
             return new ResponseEntity<>(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
