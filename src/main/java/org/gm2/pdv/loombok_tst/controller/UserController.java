@@ -1,6 +1,8 @@
 package org.gm2.pdv.loombok_tst.controller;
 
+import org.gm2.pdv.loombok_tst.dto.UserDTO;
 import org.gm2.pdv.loombok_tst.entity.User;
+import org.gm2.pdv.loombok_tst.exception.NoItemException;
 import org.gm2.pdv.loombok_tst.repository.UserRepository;
 import org.gm2.pdv.loombok_tst.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +39,13 @@ public class UserController {
 
     @PutMapping()
     public ResponseEntity put(@RequestBody User user ){
+        try{
+           return new ResponseEntity<>(userService.upodate(user), HttpStatus.OK);
 
-            Optional<User> userToEdit = userService.findById(user.getId());
-            if (userToEdit.isPresent()) {
-                userService.save(user);
-                return new ResponseEntity<>(user, HttpStatus.OK);
-            }
-            return  ResponseEntity.notFound().build();
+        }catch(NoItemException error){
+            return new ResponseEntity<>(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
     @DeleteMapping("{id}")
     public ResponseEntity delete(@PathVariable("id") Long id){
