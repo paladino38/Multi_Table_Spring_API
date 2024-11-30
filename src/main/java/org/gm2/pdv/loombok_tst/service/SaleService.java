@@ -50,7 +50,7 @@ public class SaleService {
 
     private List<ProductInfoDTO> getProductInfo(List<ItemSale> items) {
         return items.stream().map(item ->{
-            ProductInfoDTO.builder()
+            return ProductInfoDTO.builder()
                     .id(item.getId())
                     .description(item.getProduct().getDescription())
                     .quantity(item.getQuantity())
