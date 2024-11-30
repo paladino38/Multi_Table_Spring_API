@@ -50,11 +50,11 @@ public class SaleService {
 
     private List<ProductInfoDTO> getProductInfo(List<ItemSale> items) {
         return items.stream().map(item ->{
-            ProductInfoDTO productInfoDTO = new ProductInfoDTO();
-            productInfoDTO.setId(item.getId());
-            productInfoDTO.setDescription(item.getProduct().getDescription());
-            productInfoDTO.setQuantity(item.getQuantity());
-            return productInfoDTO;
+            ProductInfoDTO.builder()
+                    .id(item.getId())
+                    .description(item.getProduct().getDescription())
+                    .quantity(item.getQuantity())
+                    .build();
         }).collect(Collectors.toList());
     }
 
