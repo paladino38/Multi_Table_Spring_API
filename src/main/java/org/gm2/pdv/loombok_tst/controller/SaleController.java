@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +46,7 @@ public ResponseEntity getById(@PathVariable Long id){
            System.out.println("Valor do Userid é" + saleDTO.getUserId());
             System.out.println("Valor do product é" + saleDTO.getItems());
             long id = saleService.save(saleDTO);
-            return new ResponseEntity(new ResponseDTO<>("Venda realizada com sucesso " + id,null,HttpStatus.OK), HttpStatus.CREATED);
+            return new ResponseEntity(new ResponseDTO<>(Collections.singletonList("Venda realizada com sucesso ")), HttpStatus.CREATED);
 
         }catch (Exception e) {
                     return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
