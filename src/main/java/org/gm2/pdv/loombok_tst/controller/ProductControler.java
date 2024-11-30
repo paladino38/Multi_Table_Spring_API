@@ -1,9 +1,11 @@
 package org.gm2.pdv.loombok_tst.controller;
 
+import jakarta.validation.Valid;
 import org.gm2.pdv.loombok_tst.entity.Product;
 import org.gm2.pdv.loombok_tst.entity.User;
 import org.gm2.pdv.loombok_tst.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,7 +28,7 @@ public class ProductControler {
 
 
     @PostMapping()
-    public ResponseEntity post(@RequestBody Product product ){
+    public ResponseEntity post(@Valid @RequestBody Product product ){
         try{
             return new ResponseEntity<>(productRepository.save(product), HttpStatus.CREATED);
         }catch(Exception error){
@@ -35,7 +37,7 @@ public class ProductControler {
     }
 
     @PutMapping()
-    public ResponseEntity put(@RequestBody Product product){
+    public ResponseEntity put(@Valid @RequestBody Product product){
         try{
             return new ResponseEntity<>(productRepository.save(product), HttpStatus.OK);
         }catch (Exception error){

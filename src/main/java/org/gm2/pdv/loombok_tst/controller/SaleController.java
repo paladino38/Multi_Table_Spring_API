@@ -1,5 +1,6 @@
 package org.gm2.pdv.loombok_tst.controller;
 
+import jakarta.validation.Valid;
 import org.gm2.pdv.loombok_tst.dto.ResponseDTO;
 import org.gm2.pdv.loombok_tst.dto.SaleDTO;
 import org.gm2.pdv.loombok_tst.dto.SaleInfoDTO;
@@ -7,6 +8,7 @@ import org.gm2.pdv.loombok_tst.entity.User;
 import org.gm2.pdv.loombok_tst.repository.UserRepository;
 import org.gm2.pdv.loombok_tst.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -39,7 +41,7 @@ public ResponseEntity getById(@PathVariable Long id){
 }
 
     @PostMapping()
-    public ResponseEntity post(@RequestBody SaleDTO saleDTO) {
+    public ResponseEntity post(@Valid @RequestBody SaleDTO saleDTO) {
         try{
 
 

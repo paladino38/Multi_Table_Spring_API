@@ -1,6 +1,7 @@
 package org.gm2.pdv.loombok_tst.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class User {
     private Long id;
 
     @Column(length = 100, nullable = false)
+    @NotBlank(message = "Nome eh obrigatorio")
     private String name;
 
 

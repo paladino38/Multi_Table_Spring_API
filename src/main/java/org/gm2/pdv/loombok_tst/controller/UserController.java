@@ -1,5 +1,6 @@
 package org.gm2.pdv.loombok_tst.controller;
 
+import jakarta.validation.Valid;
 import org.gm2.pdv.loombok_tst.dto.UserDTO;
 import org.gm2.pdv.loombok_tst.entity.User;
 import org.gm2.pdv.loombok_tst.exception.NoItemException;
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity post(@RequestBody User user ){
+    public ResponseEntity post(@Valid @RequestBody User user ){
         try{
             user.setEnabled(true);
             return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @PutMapping()
-    public ResponseEntity put(@RequestBody User user ){
+    public ResponseEntity put(@Valid @RequestBody User user ){
         try{
            return new ResponseEntity<>(userService.upodate(user), HttpStatus.OK);
 
