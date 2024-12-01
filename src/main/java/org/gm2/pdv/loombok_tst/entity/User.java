@@ -22,6 +22,13 @@ public class User {
     @NotBlank(message = "Nome eh obrigatorio")
     private String name;
 
+    @Column(length = 100, nullable = false)
+    @NotBlank(message = "Username é obrigatorio")
+    private String username;
+
+    @Column(length = 100, nullable = false)
+    @NotBlank(message = "password é obrigatorio")
+    private String password;
 
     private boolean isEnabled;
 
