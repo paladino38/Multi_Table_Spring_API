@@ -1,23 +1,16 @@
 package org.gm2.pdv.loombok_tst.dto;
 
-
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class UserResponseDTO {
+
     private Long id;
-    @NotBlank(message = "name é obrigatorio")
     private String name;
     private Boolean isEnabled;
-    @NotBlank(message = "username é obrigatorio")
     private String username;
-    @NotBlank(message = "password é obrigatorio")
-    private String password;
-
 }

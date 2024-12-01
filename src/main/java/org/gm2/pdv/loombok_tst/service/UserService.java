@@ -1,6 +1,7 @@
 package org.gm2.pdv.loombok_tst.service;
 
 import org.gm2.pdv.loombok_tst.dto.UserDTO;
+import org.gm2.pdv.loombok_tst.dto.UserResponseDTO;
 import org.gm2.pdv.loombok_tst.entity.User;
 import org.gm2.pdv.loombok_tst.exception.NoItemException;
 import org.gm2.pdv.loombok_tst.repository.UserRepository;
@@ -18,8 +19,8 @@ import java.util.stream.Collectors;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    public List<UserDTO> findAll(){
-        return userRepository.findAll().stream().map(user -> new UserDTO(user.getId(),user.getName(),user.isEnabled(), user.getUsername(), user.getPassword())).collect(Collectors.toList());
+    public List<UserResponseDTO> findAll(){
+        return userRepository.findAll().stream().map(user -> new UserResponseDTO(user.getId(),user.getName(),user.isEnabled(), user.getUsername())).collect(Collectors.toList());
 
     }
 
