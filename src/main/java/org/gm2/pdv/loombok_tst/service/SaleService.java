@@ -65,8 +65,10 @@ public class SaleService {
         return items.stream().map(item ->{
             return ProductInfoDTO.builder()
                     .id(item.getId())
+                    .price(item.getProduct().getPrice())
                     .description(item.getProduct().getDescription())
                     .quantity(item.getQuantity())
+
                     .build();
         }).collect(Collectors.toList());
     }
