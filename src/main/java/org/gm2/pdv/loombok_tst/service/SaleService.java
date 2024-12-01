@@ -19,6 +19,7 @@ import org.gm2.pdv.loombok_tst.repository.SaleRepository;
 import org.gm2.pdv.loombok_tst.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -41,11 +42,23 @@ public class SaleService {
     }
 
     private SaleInfoDTO getSaleInfo(Sale sale) {
+        var prodcuts = getProductInfo(sale.getItems());
+        BigDecimal total = getTotal(prodcuts);
         return SaleInfoDTO.builder()
                 .user(sale.getUser().getName())
                 .date(sale.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")))
-                .products(getProductInfo(sale.getItems()))
+                .products(prodcuts)
+                .total(total)
                 .build();
+    }
+
+    private BigDecimal getTotal(List<ProductInfoDTO> prodcuts) {
+        BigDecimal total = BigDecimal.ZERO;
+        for(int i = 0; i< prodcuts.size(); i++) {
+            ProductInfoDTO currentProduct = prodcuts.get(i);
+            total = total.add(currentProduct.getPrice().multiply(new BigDecimal(currentProduct.getQuantity())));
+        }
+        return total;
     }
 
     private List<ProductInfoDTO> getProductInfo(List<ItemSale> items) {
