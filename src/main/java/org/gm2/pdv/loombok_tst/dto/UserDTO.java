@@ -16,7 +16,4 @@ public class UserDTO {
     private String name;
     private Boolean isEnabled;
 
-    public User toEntity(){
-
-    }
 }
