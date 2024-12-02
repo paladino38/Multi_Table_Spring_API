@@ -22,7 +22,7 @@ public class User {
     @NotBlank(message = "Nome eh obrigatorio")
     private String name;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false, unique = true)
     @NotBlank(message = "Username é obrigatorio")
     private String username;
 
