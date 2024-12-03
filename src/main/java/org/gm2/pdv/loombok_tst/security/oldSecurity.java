@@ -1,4 +1,4 @@
-package org.gm2.pdv.loombok_tst.security;
+//package org.gm2.pdv.loombok_tst.security;
 import org.gm2.pdv.loombok_tst.entity.User;
 import org.gm2.pdv.loombok_tst.repository.UserRepository;
 import org.gm2.pdv.loombok_tst.service.UserService;
@@ -21,9 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-package org.gm2.pdv.loombok_tst.security;
-
+/*
 @Service
 public class oldSecurity {
         @Autowired
@@ -48,6 +46,4 @@ public class oldSecurity {
                     .build();
         }
     }
-
-
-}
+*/
