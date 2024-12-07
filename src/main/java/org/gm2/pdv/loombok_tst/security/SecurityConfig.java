@@ -30,6 +30,10 @@ public class SecurityConfig {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    private CustomUserDetailService  userDetailsService;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -55,7 +59,7 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);*/
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
 
 
@@ -67,19 +71,36 @@ public class SecurityConfig {
                     authorize.requestMatchers("/sale").hasRole("ADMIN");
                     authorize.requestMatchers("/user").hasRole("ADMIN");
                     authorize.requestMatchers("/product").hasRole("ADMIN");
+                    authorize.requestMatchers("/error").permitAll();
                     authorize.anyRequest().authenticated();
-                }).httpBasic(Customizer.withDefaults());
+                }).httpBasic(Customizer.withDefaults())
+               .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);*/
+
+
+
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests((authorize) -> {
+                    authorize.requestMatchers("/login").permitAll();
+                    authorize.requestMatchers("/sale").hasRole("ADMIN");
+                    authorize.requestMatchers("/user").hasRole("ADMIN");
+                    authorize.requestMatchers("/error").permitAll();
+                    authorize.requestMatchers("/product").hasRole("ADMIN");
+                    authorize.anyRequest().authenticated();
+                })
+                .addFilter(new JwtAuthorizationFilter(jwtTokenProvider)) // Add the JWT filter
+                .httpBasic(Customizer.withDefaults());
+
         return http.build();
     }
 
 
-   /* public OncePerRequestFilter jwtFilter() {
+    public OncePerRequestFilter jwtFilter() {
 
-      //  return new JwtAuthFilter(jwtService, );
-    }*/
+        return new JwtAuthFilter(jwtService,userDetailsService);
+    }
 
 
-    @Bean
+ /*   @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         // Configura o AuthenticationManager com UserDetailsService e PasswordEncoder
         return new ProviderManager(
@@ -88,6 +109,12 @@ public class SecurityConfig {
                     setPasswordEncoder(passwordEncoder);
                 }}
         );
+    }*/
+
+
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
     }
 
     @Bean
