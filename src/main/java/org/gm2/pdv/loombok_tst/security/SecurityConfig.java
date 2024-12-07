@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,10 +19,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private JwtService jwtService;
+
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -32,17 +40,43 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+       /* http.csrf()
+                .disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/auth/**")
+                .permitAll()
+                .requestMatchers("/login").permitAll()
+                .anyRequest()
+                .authenticated()
+                .requestMatchers("/sale").hasRole("ADMIN")
+                .requestMatchers("/user").hasRole("ADMIN")
+                .requestMatchers("/product").hasRole("ADMIN")
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);*/
 
-        http.csrf(AbstractHttpConfigurer::disable)
+
+
+
+       http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) ->{
-                    authorize.requestMatchers("/info").permitAll();
+                    authorize.requestMatchers("/login").permitAll();
                    // authorize.anyRequest().permitAll();
                     authorize.requestMatchers("/sale").hasRole("ADMIN");
                     authorize.requestMatchers("/user").hasRole("ADMIN");
                     authorize.requestMatchers("/product").hasRole("ADMIN");
                     authorize.anyRequest().authenticated();
-                }).httpBasic(Customizer.withDefaults());
+                }).addFilter(jwtFilter(),)
+                 .httpBasic(Customizer.withDefaults());
         return http.build();
+    }
+
+
+    public OncePerRequestFilter jwtFilter() {
+
+        return new JwtAuthFilter(jwtService, );
     }
 
 

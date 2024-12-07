@@ -1,9 +1,11 @@
 package org.gm2.pdv.loombok_tst.security;
 
+import org.gm2.pdv.loombok_tst.dto.LoginDTO;
 import org.gm2.pdv.loombok_tst.entity.User;
 import org.gm2.pdv.loombok_tst.repository.UserRepository;
 import org.gm2.pdv.loombok_tst.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,5 +31,14 @@ public class CustomUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         return new UserPrincipal(user);
+    }
+
+    public void verifyUserCredentials(LoginDTO login){
+        UserDetails user = loadUserByUsername(login.getUsername());
+        boolean passwordIsTheSame = SecurityConfig.passwordEncoder().matches(login.getPassword(), user.getPassword());
+        if(!passwordIsTheSame){
+            throw new BadCredentialsException("Bad credentials");
+        }
+
     }
 }
