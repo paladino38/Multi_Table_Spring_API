@@ -68,8 +68,7 @@ public class SecurityConfig {
                     authorize.requestMatchers("/user").hasRole("ADMIN");
                     authorize.requestMatchers("/product").hasRole("ADMIN");
                     authorize.anyRequest().authenticated();
-                }).addFilter(jwtFilter(),)
-                 .httpBasic(Customizer.withDefaults());
+                }).httpBasic(Customizer.withDefaults());
         return http.build();
     }
 
