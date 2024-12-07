@@ -75,7 +75,7 @@ public class SecurityConfig {
 
     public OncePerRequestFilter jwtFilter() {
 
-        return new JwtAuthFilter(jwtService, );
+      //  return new JwtAuthFilter(jwtService, );
     }
 
 
