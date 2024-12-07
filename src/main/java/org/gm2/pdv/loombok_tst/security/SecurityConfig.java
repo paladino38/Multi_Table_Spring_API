@@ -100,7 +100,7 @@ public class SecurityConfig {
     }
 
 
- /*   @Bean
+    @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         // Configura o AuthenticationManager com UserDetailsService e PasswordEncoder
         return new ProviderManager(
@@ -109,7 +109,7 @@ public class SecurityConfig {
                     setPasswordEncoder(passwordEncoder);
                 }}
         );
-    }*/
+    }
 
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
