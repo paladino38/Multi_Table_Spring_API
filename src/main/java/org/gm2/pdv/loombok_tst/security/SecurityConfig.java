@@ -73,10 +73,10 @@ public class SecurityConfig {
     }
 
 
-    public OncePerRequestFilter jwtFilter() {
+   /* public OncePerRequestFilter jwtFilter() {
 
       //  return new JwtAuthFilter(jwtService, );
-    }
+    }*/
 
 
     @Bean
